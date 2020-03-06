@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+      </head>
+<body class="ContraCheque">    
+    <div id="salario">
+        <v-app>
+        <v-content>
+        <v-container>
+            <h2>Ganhos</h2>
+
+            <v-row>
+                <v-col cols="12" sm="3">
+                    <v-text-field id="salarioBase" outlined color="#090" hide-details label="Salário base" v-model="salarioBase"></v-text-field>
+                </v-col>
+        
+                <v-col cols="12" sm="3">
+                    <v-text-field id="mesAnoReferencia" outlined hide-details label="data de referência" v-model="mesAnoReferencia"></v-text-field>
+                </v-col>
+
+                <v-col cols="12" sm="3">
+                    <v-text-field id="diasUteis" outlined hide-details label="Dias úteis" v-model="diasUteis"></v-text-field>
+                </v-col>
+        
+                <v-col cols="12" sm="3">
+                    <v-text-field id="diasNaoUteis" outlined hide-details label="Dias não úteis" v-model="diasNaoUteis"></v-text-field>
+                </v-col>      
+            </v-row>
+
+            <v-row>
+                <v-col cols="12" sm="1">
+                    <p class="font-weight-black" id="salarioHorasTrabalhadas">Horas trabalhadas</p>
+                </v-col>                
+                <v-col cols="12" sm="1">
+                    <v-text-field id="salarioHoras" outlined color="#090" hide-details label="Horas" v-model="salarioHoras"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="1">
+                    <v-text-field id="salarioMinutos" outlined color="#090" hide-details label="Minutos" v-model="salarioMinutos"></v-text-field>
+                </v-col> 
+                <v-col cols="12" sm="3">
+                    <v-text-field id="salario" readonly color="#090" hide-details label="Salário real" v-model="calcularSalario"></v-text-field>
+                </v-col>
+            </v-row>
+
+            <v-row>
+                <v-col cols="12" sm="1">
+                    <p class="font-weight-black" id="horaExtra50">Hora extra 50%</p>
+                </v-col>                
+                <v-col cols="12" sm="1">
+                    <v-text-field id="horaExtra50Horas" outlined color="#090" hide-details label="Horas" v-model="horaExtra50Horas"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="1">
+                    <v-text-field id="horaExtra50Minutos" outlined color="#090" hide-details label="Minutos" v-model="horaExtra50Minutos"></v-text-field>
+                </v-col> 
+                <v-col cols="12" sm="3">
+                    <v-text-field id="horaExtra50Valor"  readonly color="#090" hide-details label="Valor" v-model="calcularHoraExtraValor50"></v-text-field>
+                </v-col>  
+                <v-col cols="12" sm="3">
+                    <v-text-field id="horaExtra50Repouso"  readonly color="#090" hide-details label="Repouso" v-model="calcularHoraExtraRepouso50"></v-text-field>
+                </v-col>  
+                <v-col cols="12" sm="3">
+                    <v-text-field id="horaExtra50Total"  readonly color="#090" hide-details label="Total" v-model="calcularHoraExtraTotal50"></v-text-field>
+                </v-col>  
+            </v-row>
+            
+            <v-row>
+                <v-col cols="12" sm="1">
+                    <p class="font-weight-black" id="horaExtra100">Hora extra 100%</p>
+                </v-col>                
+                <v-col cols="12" sm="1">
+                    <v-text-field id="horaExtra100Horas" outlined color="#090" hide-details label="Horas" v-model="horaExtra100Horas"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="1">
+                    <v-text-field id="horaExtra100Minutos" outlined color="#090" hide-details label="Minutos" v-model="horaExtra100Minutos"></v-text-field>
+                </v-col> 
+                <v-col cols="12" sm="3">
+                    <v-text-field id="horaExtra100Valor" readonly color="#090" hide-details label="Valor" v-model="calcularHoraExtraValor100"></v-text-field>
+                </v-col>  
+                <v-col cols="12" sm="3">
+                    <v-text-field id="horaExtra100Repouso" readonly color="#090" hide-details label="Repouso" v-model="calcularHoraExtraRepouso100"></v-text-field>
+                </v-col>  
+                <v-col cols="12" sm="3">
+                    <v-text-field id="horaExtra100Total" readonly color="#090" hide-details label="Total" v-model="calcularHoraExtraTotal100"></v-text-field>
+                </v-col>  
+            </v-row>
+        
+            <v-row>
+                <v-col cols="12" sm="3">
+                    <v-text-field id="outrosGanhos" outlined color="#090" label="Outros ganhos" v-model="outrosGanhos"></v-text-field>
+                </v-col>                  
+                <v-col cols="12" sm="3">
+                    <v-text-field id="ganhosTotalValor" readonly color="#090" hide-details label="Valor total" v-model="calcularGanhosTotalValor"></v-text-field>
+                </v-col>  
+                <v-col cols="12" sm="3">
+                    <v-text-field id="ganhosTotalRepuso" readonly color="#090" hide-details label="Repouso total" v-model="calcularGanhosTotalRepouso"></v-text-field>
+                </v-col>  
+                <v-col cols="12" sm="3">
+                    <v-text-field id="ganhostotal" readonly color="#090" hide-details label="Total geral" v-model="calcularGanhosTotal"></v-text-field>
+                </v-col>  
+            </v-row>  
+
+            <h2>Despesas</h2>
+
+            <v-row>
+                <v-col cols="12" sm="1">
+                    <p class="font-weight-black" id="faltas">Faltas</p>
+                </v-col>                
+                <v-col cols="12" sm="1">
+                    <v-text-field id="faltasHoras" outlined color="#f00" hide-details label="Horas" v-model="faltasHoras"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="1">
+                    <v-text-field id="faltasMinutos" outlined color="#f00" hide-details label="Minutos" v-model="faltasMinutos"></v-text-field>
+                </v-col> 
+                <v-col cols="12" sm="3">
+                    <v-text-field id="faltasValorTotal" readonly color="#f00" hide-details label="Valor" v-model="calcularFaltasValorTotal"></v-text-field>
+                </v-col>  
+            </v-row>
+
+            <v-row>
+                <v-col cols="12" sm="1">
+                    <p class="font-weight-black" id="dependentes">Dependentes</p>
+                </v-col>                
+                <v-col cols="12" sm="2">
+                    <v-text-field id="dependentesNumero" outlined color="#f00" hide-details label="Quantidade" v-model="dependentesNumero"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="3">
+                    <v-text-field id="dependentesValor" readonly color="#f00" hide-details label="Valor" v-model="dependentesValor"></v-text-field>
+                </v-col> 
+                <v-col cols="12" sm="3">
+                    <v-text-field id="dependentesTotal" readonly color="#f00" hide-details label="Total" v-model="calcularValorTotalDependentes"></v-text-field>
+                </v-col>  
+            </v-row>   
+            
+            <v-row>
+                <v-col cols="12" sm="3">
+                    <v-text-field id="valeAlimentacao" outlined color="#f00" label="Vale alimentação" v-model="valeAlimentacao"></v-text-field>
+                </v-col>                  
+                <v-col cols="12" sm="3">
+                    <v-text-field id="planoSaude" outlined color="#f00" hide-details label="Plano de saúde" v-model="planoSaude"></v-text-field>
+                </v-col>  
+                <v-col cols="12" sm="3">
+                    <v-text-field id="planoOdonto" outlined color="#f00" hide-details label="Plano odonto" v-model="planoOdonto"></v-text-field>
+                </v-col>  
+                <v-col cols="12" sm="3">
+                    <v-text-field id="outrasDespesas" outlined color="#f00" hide-details label="Outras despesas" v-model="outrasDespesas"></v-text-field>
+                </v-col>  
+            </v-row> 
+        
+            
+            <h2>Contra-cheque</h2>
+                
+            <v-row>
+                <v-col cols="12" sm="4">
+                    <p class="font-weight-black" id="semHE">Sem hora extra</p>
+                </v-col>                
+                <v-col cols="12" sm="4">
+                    <p class="font-weight-black" id="comHE">Sem hora extra</p>
+                </v-col> 
+                <v-col cols="12" sm="4">
+                    <p class="font-weight-black" id="diferenca">Diferença</p>
+                </v-col>  
+            </v-row>
+
+            <v-row>                
+                <v-col cols="12" sm="4">
+                    <v-text-field id="brutoSemHE" readonly hide-details label="Salário bruto" v-model="calcularBrutoSemHE"></v-text-field>
+                </v-col>  
+                <v-col cols="12" sm="4">
+                    <v-text-field id="brutoComHE" readonly hide-details label="Salário bruto" v-model="calcularBrutoComHE"></v-text-field>
+                </v-col>  
+                <v-col cols="12" sm="4">
+                    <v-text-field id="brutoDiferenca" readonly hide-details label="Salário bruto" v-model="calcularBrutoDiferenca"></v-text-field>
+                </v-col>  
+            </v-row>  
+        
+            <v-row>                
+                <v-col cols="12" sm="4">
+                    <v-text-field id="inssSemHE" readonly hide-details label="INSS" v-model="calcularINSSSemHE"></v-text-field>
+                </v-col>  
+                <v-col cols="12" sm="4">
+                    <v-text-field id="inssComHE" readonly hide-details label="INSS" v-model="calcularINSSComHE"></v-text-field>
+                </v-col>  
+                <v-col cols="12" sm="4">
+                    <v-text-field id="inssDiferenca" readonly hide-details label="INSS" v-model="calcularINSSDiferenca"></v-text-field>
+                </v-col>  
+            </v-row>  
+            
+            <v-row>                
+                <v-col cols="12" sm="4">
+                    <v-text-field id="irrfSemHE" readonly hide-details label="IRRF" v-model="calcularIRRFSemHE"></v-text-field>
+                </v-col>  
+                <v-col cols="12" sm="4">
+                    <v-text-field id="irrfComHE" readonly hide-details label="IRRF" v-model="calcularIRRFComHE"></v-text-field>
+                </v-col>  
+                <v-col cols="12" sm="4">
+                    <v-text-field id="irrfDiferenca" readonly hide-details label="IRRF" v-model="calcularIRRFDiferenca"></v-text-field>
+                </v-col>  
+            </v-row>  
+
+            <v-row>                
+                <v-col cols="12" sm="4">
+                    <v-text-field id="impostosSemHE" readonly hide-details label="Impostos" v-model="calcularImpostosSemHE"></v-text-field>
+                </v-col>  
+                <v-col cols="12" sm="4">
+                    <v-text-field id="impostosComHE" readonly hide-details label="Impostos" v-model="calcularImpostosComHE"></v-text-field>
+                </v-col>  
+                <v-col cols="12" sm="4">
+                    <v-text-field id="impostosDiferenca" readonly hide-details label="Impostos" v-model="calcularImpostosDiferenca"></v-text-field>
+                </v-col>  
+            </v-row>              
+
+            <v-row>                
+                <v-col cols="12" sm="4">
+                    <v-text-field id="fgtsSemHE" readonly hide-details label="FGTS" v-model="calcularFGTSSemHE"></v-text-field>
+                </v-col>  
+                <v-col cols="12" sm="4">
+                    <v-text-field id="fgtsComHE" readonly hide-details label="FGTS" v-model="calcularFGTSComHE"></v-text-field>
+                </v-col>  
+                <v-col cols="12" sm="4">
+                    <v-text-field id="fgtsDiferenca" readonly hide-details label="FGTS" v-model="calcularFGTSDiferenca"></v-text-field>
+                </v-col>  
+            </v-row>       
+
+            <v-row>                
+                <v-col cols="12" sm="4">
+                    <v-text-field id="liquidoSemHE" readonly hide-details label="Salário líquido" v-model="calcularLiquidoSemHE"></v-text-field>
+                </v-col>  
+                <v-col cols="12" sm="4">
+                    <v-text-field id="liquidoComHE" readonly hide-details label="Salário líquido" v-model="calcularLiquidoComHE"></v-text-field>
+                </v-col>  
+                <v-col cols="12" sm="4">
+                    <v-text-field id="liquidoDiferenca" readonly hide-details label="Salário líquido" v-model="calcularLiquidoDiferenca"></v-text-field>
+                </v-col>  
+            </v-row> 
+
+
+            <template>
+                <h3 class="mt-3">Tabela de Faixas IRRF</h3>
+                <v-simple-table>
+                  <template v-slot:default>
+                    <thead>
+                      <tr>
+                        <th class="text-left">Faixa</th>
+                        <th class="text-left">Piso</th>
+                        <th class="text-left">Teto</th>
+                        <th class="text-left">Alíquota</th>
+                        <th class="text-left">Valor dedução</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="item in desserts" :key="item.name">
+                        <tr v-for="(faixasIRRF, i) in faixasIRRF" :Key="faixasIRRF.faixas">
+                            <td>
+                            <span v-if="faixasIRRF.piso > 0"> {{i}}</span>
+                            <span v-else> Isento </span>
+                            </td>  
+                            <td v-money="'R$'">{{faixasIRRF.piso}}</td>
+                            <td v-money="'R$'">{{faixasIRRF.teto}}</td>
+                            <td>{{faixasIRRF.aliquota}} %</td>
+                            <td v-money="'R$'">{{faixasIRRF.valor}}</td>
+                        </tr>
+                      </tr>
+                    </tbody>
+                  </template>
+                </v-simple-table>
+            </template>    
+
+            <template>
+                <h3 class="mt-3">Tabela de Faixas INSS</h3>
+                <v-simple-table>
+                  <template v-slot:default>
+                    <thead>
+                      <tr>
+                        <th class="text-left">Faixa</th>
+                        <th class="text-left">Piso</th>
+                        <th class="text-left">Teto</th>
+                        <th class="text-left">Alíquota</th>
+                        <th class="text-left">Valor dedução</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="item in desserts" :key="item.name">
+                        <tr v-for="(faixasINSS, i) in faixasINSS" :key="faixasINSS.Faixas">
+                            <td>{{i + 1}}</td>  
+                            <td v-money="'R$'">{{faixasINSS.piso}}</td>
+                            <td v-money="'R$'">{{faixasINSS.teto}}</td>
+                            <td>{{faixasINSS.aliquota}} %</td>
+                            <td v-money="'R$'">{{faixasINSS.valor}}</td>
+                        </tr>
+                    </tbody>
+                  </template>
+                </v-simple-table>
+            </template>    
+
+        </v-container>
+        </v-content>            
+        </v-app>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script>
+        Vue.directive('money',{
+            inserted(el, binding) {
+                const amount = parseFloat(el.innerHTML).toFixed(2)
+                    .replace('.',',')
+                    .replace(/(\d)(?=(\d{3})+\,)/g, '$1.')
+                el.innerHTML = `${binding.value} ${amount}`
+            }
+
+        })
+        new Vue({
+            el: "#salario",
+            vuetify: new Vuetify(),
+            data:{
+                contador: 0,
+                x: 0,
+                y: 0,
+                
+                faixasIRRF: [
+                    {piso: 0,       teto: 1903.98, aliquota: 0,    valor: 0},
+                    {piso: 1903.99, teto: 2826.65, aliquota: 7.5,  valor: 142.80},
+                    {piso: 2826.66, teto: 3751.05, aliquota: 15,   valor: 354.80},
+                    {piso: 3751.06, teto: 4664.68, aliquota: 22.5, valor: 636.13},
+                    {piso: 4664.69, teto: 0,       aliquota: 27.5, valor: 869.36}
+                ],
+
+                faixasINSS: [
+                    {piso: 0,       teto: 1045.00, aliquota: 7.5, valor: 0},
+                    {piso: 1045.01, teto: 2089.60, aliquota: 9,   valor: 15.67},
+                    {piso: 2089.61, teto: 3134.40, aliquota: 12,  valor: 78.36},
+                    {piso: 3134.41, teto: 6101.06, aliquota: 14,  valor: 141.05}
+                ],                
+                           
+                salarioBase: 0,
+                mesAnoReferencia: "Março/2020",
+                diasUteis: 26,
+                diasNaoUteis: 5,
+
+                salarioHoras: 200,
+                salarioMinutos: 0,
+                salario: 0,
+
+                horaExtra50Horas: 0,
+                horaExtra50Minutos: 0,
+                horaExtra50Valor: 0,
+                horaExtra50Repouso: 0,
+                horaExtra50Total: 0,
+
+                horaExtra100Horas: 0,
+                horaExtra100Minutos: 0,
+                horaExtra100Valor: 0,
+                horaExtra100Repouso: 0,
+                horaExtra100Total: 0,
+
+                ganhosTotalValor: 0,
+                ganhosTotalRepouso: 0,
+                ganhosTotal: 0,  
+
+                outrosGanhos: 0,            
+                
+                faltasHoras: 0,
+                faltasMinutos: 0,
+                faltasValorTotal: 0,
+
+                dependentesNumero: 0,
+                dependentesValor: 189.59,
+                dependentesTotal: 0,
+
+                outrasDespesas: 0,
+                valeAlimentacao: 0,
+                planoSaude: 0,
+                planoOdonto: 0,
+
+                brutoSemHE: 0,
+                brutoComHE: 0,
+                brutoDiferenca: 0,
+
+                inssSemHE: 0,
+                inssComHE: 0,
+                inssDiferenca: 0,
+
+                irrfSemHE: 0,
+                irrfComHE: 0,
+                irrfDiferenca: 0,
+
+                impostosSemHE: 0,
+                impostosComHE: 0,
+                impostosDiferenca: 0,
+
+                fgtsSemHE: 0,
+                fgtsComHE: 0,
+                fgtsDiferenca: 0,
+
+                liquidoSemHE: 0,
+                liquidoComHE: 0,
+                liquidoDiferenca: 0
+
+           },
+           methods: {
+               calcularContraCheque(salario,horas,minutos){
+                    return  (salario/200) * (horas + ( minutos/60)) * (1.5)
+               },
+               horaCerta() {
+                   return new Date().toLocaleString()
+               },
+               adicionaContador() {
+                   this.contador++ 
+               },
+               atualizarPosicao(e) {
+                   this.x = e.clientX
+                   this.y = e.clientY
+               }
+           },
+           computed: {
+                calcularSalario() {
+                    return ((this.salarioBase / 200) * ((+this.salarioHoras) + (this.salarioMinutos / 60))).toFixed(2)
+                },  
+                calcularHoraExtraValor50() {
+                  return (((this.salarioBase) / 200) * ((+this.horaExtra50Horas) + ((this.horaExtra50Minutos) / 60)) * (1.5)).toFixed(2)
+                }, 
+                calcularHoraExtraRepouso50(){
+                    if (this.diasUteis != "")
+                        return (((this.calcularHoraExtraValor50 / this.diasUteis) * this.diasNaoUteis)).toFixed(2) 
+                    else
+                        return 0  
+                },
+                calcularHoraExtraTotal50() {
+                    return (parseFloat(this.calcularHoraExtraValor50) + parseFloat(this.calcularHoraExtraRepouso50)).toFixed(2)
+                },
+                calcularHoraExtraValor100() {
+                    return ((this.salarioBase / 200) * ((+this.horaExtra100Horas) + (this.horaExtra100Minutos / 60)) * (2)).toFixed(2)
+                }, 
+                calcularHoraExtraRepouso100(){
+                    if (this.diasUteis != "")
+                        return (((this.calcularHoraExtraValor100 / this.diasUteis) * this.diasNaoUteis)).toFixed(2) 
+                    else
+                        return 0  
+                },
+                calcularHoraExtraTotal100() {
+                    return (parseFloat(this.calcularHoraExtraValor100) + parseFloat(this.calcularHoraExtraRepouso100)).toFixed(2)
+                }, 
+                calcularGanhosTotalValor() {
+                    return (parseFloat(this.calcularHoraExtraValor50) + parseFloat(this.calcularHoraExtraValor100)).toFixed(2) 
+                },
+                calcularGanhosTotalRepouso() {
+                    return  (parseFloat(this.calcularHoraExtraRepouso50) + parseFloat(this.calcularHoraExtraRepouso100)).toFixed(2) 
+                },
+                calcularGanhosTotal() {
+                    return  (parseFloat(this.calcularHoraExtraTotal50) + parseFloat(this.calcularHoraExtraTotal100)).toFixed(2) 
+                },
+                calcularFaltasValorTotal() {
+                 return ((this.calcularSalario / 220) * ((+this.faltasHoras) + (this.faltasMinutos / 60))).toFixed(2) 
+                },
+                calcularValorTotalDependentes() {
+                    return (this.dependentesNumero * this.dependentesValor).toFixed(2)
+                },
+                calcularBrutoSemHE() {
+                    return (parseFloat(this.calcularSalario)).toFixed(2) 
+                },
+                calcularBrutoComHE() {
+                    return (parseFloat(this.calcularSalario) + parseFloat(this.calcularGanhosTotal)).toFixed(2) 
+                },
+                calcularBrutoDiferenca() {
+                    return (parseFloat(this.calcularBrutoComHE) - parseFloat(this.calcularBrutoSemHE)).toFixed(2)
+                },
+                calcularINSSSemHE() {
+                    let baseINSS
+                    if ((parseFloat(this.salarioBase) + parseFloat(this.outrosGanhos) - parseFloat(this.outrasDespesas) - parseFloat(this.calcularFaltasValorTotal)) > (parseFloat(this.faixasINSS[2].teto)))
+                        baseINSS = (parseFloat(this.faixasINSS[2].teto))
+                    else    
+                        baseINSS = (parseFloat(this.salarioBase) + parseFloat(this.outrosGanhos) - parseFloat(this.outrasDespesas) - parseFloat(this.calcularFaltasValorTotal)) 
+                                        
+                    if ((baseINSS <= (parseFloat(this.faixasINSS[0].teto))))
+                        return  (baseINSS * (parseFloat(this.faixasINSS[0].aliquota / 100))).toFixed(2)
+                    else if ((baseINSS >= (parseFloat(this.faixasINSS[1].piso))) && (baseINSS <= (parseFloat(this.faixasINSS[1].teto))))
+                        return  (baseINSS * (parseFloat(this.faixasINSS[1].aliquota / 100))).toFixed(2)
+                    else
+                        return  (baseINSS * (parseFloat(this.faixasINSS[2].aliquota / 100))).toFixed(2)
+                },
+                calcularINSSComHE() {
+                    let baseINSS
+                    if ((parseFloat(this.salarioBase) + parseFloat(this.calcularGanhosTotal) + parseFloat(this.outrosGanhos) - parseFloat(this.outrasDespesas) - parseFloat(this.calcularFaltasValorTotal)) > (parseFloat(this.faixasINSS[2].teto)))
+                        baseINSS = (parseFloat(this.faixasINSS[2].teto))
+                    else    
+                        baseINSS = (parseFloat(this.salarioBase) + parseFloat(this.calcularGanhosTotal) + parseFloat(this.outrosGanhos) - parseFloat(this.outrasDespesas) - parseFloat(this.calcularFaltasValorTotal)) 
+                                          
+                    if ((baseINSS <= (parseFloat(this.faixasINSS[0].teto))))
+                        return  (baseINSS * (parseFloat(this.faixasINSS[0].aliquota / 100))).toFixed(2)
+                    else if ((baseINSS >= (parseFloat(this.faixasINSS[1].piso))) && (baseINSS <= (parseFloat(this.faixasINSS[1].teto))))
+                        return  (baseINSS * (parseFloat(this.faixasINSS[1].aliquota / 100))).toFixed(2)
+                    else 
+                        return  (baseINSS * (parseFloat(this.faixasINSS[2].aliquota / 100))).toFixed(2)
+                },
+                calcularINSSDiferenca() {
+                    return (parseFloat(this.calcularINSSComHE) - parseFloat(this.calcularINSSSemHE)).toFixed(2)
+                },
+                calcularIRRFSemHE() {
+                    let baseIRRF
+                    baseIRRF = (parseFloat(this.calcularSalario) - parseFloat(this.calcularINSSSemHE) - parseFloat(this.calcularValorTotalDependentes)) 
+                    if (baseIRRF <= (parseFloat(this.faixasIRRF[0].teto)))
+                        return 0 
+                    else if ((baseIRRF >= (parseFloat(this.faixasIRRF[1].piso))) && (baseIRRF <= (parseFloat(this.faixasIRRF[1].teto))))    
+                        return ((baseIRRF * (parseFloat(this.faixasIRRF[1].aliquota / 100)) - (parseFloat(this.faixasIRRF[1].valor)))).toFixed(2)
+                    else if ((baseIRRF >= (parseFloat(this.faixasIRRF[2].piso))) && (baseIRRF <= (parseFloat(this.faixasIRRF[2].teto))))    
+                        return ((baseIRRF * (parseFloat(this.faixasIRRF[2].aliquota / 100)) - (parseFloat(this.faixasIRRF[2].valor)))).toFixed(2) 
+                    else if ((baseIRRF >= (parseFloat(this.faixasIRRF[3].piso))) && (baseIRRF <= (parseFloat(this.faixasIRRF[3].teto))))    
+                        return ((baseIRRF * (parseFloat(this.faixasIRRF[3].aliquota / 100)) - (parseFloat(this.faixasIRRF[3].valor)))).toFixed(2) 
+                    else 
+                        return ((baseIRRF * (parseFloat(this.faixasIRRF[4].aliquota / 100)) - (parseFloat(this.faixasIRRF[4].valor)))).toFixed(2)  
+                },
+                calcularIRRFComHE() {
+                    let baseIRRF 
+                    baseIRRF = (parseFloat(this.calcularSalario) + parseFloat(this.calcularGanhosTotal) - parseFloat(this.calcularINSSComHE) - parseFloat(this.calcularValorTotalDependentes))
+                    if (baseIRRF <= (parseFloat(this.faixasIRRF[0].teto)))
+                        return 0 
+                    else if ((baseIRRF >= (parseFloat(this.faixasIRRF[1].piso))) && (baseIRRF <= (parseFloat(this.faixasIRRF[1].teto))))    
+                        return ((baseIRRF * (parseFloat(this.faixasIRRF[1].aliquota / 100)) - (parseFloat(this.faixasIRRF[1].valor)))).toFixed(2)
+                    else if ((baseIRRF >= (parseFloat(this.faixasIRRF[2].piso))) && (baseIRRF <= (parseFloat(this.faixasIRRF[2].teto))))    
+                        return ((baseIRRF * (parseFloat(this.faixasIRRF[2].aliquota / 100)) - (parseFloat(this.faixasIRRF[2].valor)))).toFixed(2) 
+                    else if ((baseIRRF >= (parseFloat(this.faixasIRRF[3].piso))) && (baseIRRF <= (parseFloat(this.faixasIRRF[3].teto))))    
+                        return ((baseIRRF * (parseFloat(this.faixasIRRF[3].aliquota / 100)) - (parseFloat(this.faixasIRRF[3].valor)))).toFixed(2) 
+                    else 
+                        return ((baseIRRF * (parseFloat(this.faixasIRRF[4].aliquota / 100)) - (parseFloat(this.faixasIRRF[4].valor)))).toFixed(2)  
+                },
+                calcularIRRFDiferenca() {
+                    return (parseFloat(this.calcularIRRFComHE) - parseFloat(this.calcularIRRFSemHE)).toFixed(2)
+                },
+                calcularImpostosSemHE() {
+                    return (parseFloat(this.calcularINSSSemHE) + parseFloat(this.calcularIRRFSemHE)).toFixed(2)
+
+                },
+                calcularImpostosComHE() {
+                    return (parseFloat(this.calcularINSSComHE) + parseFloat(this.calcularIRRFComHE)).toFixed(2)
+                },
+                calcularImpostosDiferenca() {
+                    return (parseFloat(this.calcularImpostosComHE) - parseFloat(this.calcularImpostosSemHE)).toFixed(2)
+                },
+                calcularFGTSSemHE() {
+                    return (Math.trunc(((parseFloat(this.calcularSalario) - parseFloat(this.calcularFaltasValorTotal)) * 0.08) * 100) / 100).toFixed(2)
+                },
+                calcularFGTSComHE() {
+                    return (Math.trunc(((parseFloat(this.calcularSalario) + parseFloat(this.calcularGanhosTotal) - parseFloat(this.calcularFaltasValorTotal)) * 0.08) * 100) / 100).toFixed(2)
+                },
+                calcularFGTSDiferenca() {
+                    return (parseFloat(this.calcularFGTSComHE) - parseFloat(this.calcularFGTSSemHE)).toFixed(2)
+                },
+                calcularLiquidoSemHE() {
+                    return (parseFloat(this.calcularSalario) + 
+                            parseFloat(this.outrosGanhos) -
+                            parseFloat(this.outrasDespesas) -
+                            parseFloat(this.calcularFaltasValorTotal) -
+                            parseFloat(this.valeAlimentacao) -
+                            parseFloat(this.planoSaude) -
+                            parseFloat(this.planoOdonto) -
+                            parseFloat(this.calcularImpostosComHE)).toFixed(2)
+                },
+                calcularLiquidoComHE() {
+                    return (parseFloat(this.calcularSalario) + 
+                            parseFloat(this.calcularGanhosTotal) + 
+                            parseFloat(this.outrosGanhos) -
+                            parseFloat(this.outrasDespesas) -
+                            parseFloat(this.calcularFaltasValorTotal) -
+                            parseFloat(this.valeAlimentacao) -
+                            parseFloat(this.planoSaude) -
+                            parseFloat(this.planoOdonto) -
+                            parseFloat(this.calcularImpostosComHE)).toFixed(2)
+                },
+                calcularLiquidoDiferenca() {
+                    return (parseFloat(this.calcularLiquidoComHE) - parseFloat(this.calcularLiquidoSemHE)).toFixed(2)
+                }
+           }       
+        })
+    </script>
+</body>
+</html>
